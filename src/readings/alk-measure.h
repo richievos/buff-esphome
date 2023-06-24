@@ -5,7 +5,7 @@
 // Buff Libraries
 #include "doser/doser.h"
 #include "mqtt-common.h"
-#include "ph-controller.h"
+#include "readings/ph-controller.h"
 #include "readings/alk-measure-common.h"
 #include "readings/ph.h"
 #include "time-common.h"
@@ -188,7 +188,7 @@ class AlkMeasurer {
                 r.nextMeasurementStepAction = MeasurementStepAction::MEASURE_PH;
             } else if (prevResult.nextMeasurementStepAction == MeasurementStepAction::MEASURE_PH) {
                 auto newPHReading = _phReader->readNewPHSignal();
-                auto phReading = r.measuredPHStats->addAlkReading(newPHReading);
+                auto phReading = r.measuredPHStats->adPHReading(newPHReading);
                 r.alkReading.phReading = phReading;
 
                 if (r.measuredPHStats->receivedMinReadings()) {

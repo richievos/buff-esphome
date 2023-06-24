@@ -37,19 +37,50 @@ const std::string hostname = BUFF_NAME;
  *******************************/
 
 // I2C address of the PH reading board (from the circuit board's docs)
-const auto roboTankPHSensorI2CAddress = 98l;
-defineRoboTankSignalReaderFunc(roboTankPHSensorI2CAddress)
+const std::map<unsigned char, unsigned char> boardIDToPort = {
+    {5, 98},
+    {6, 94},
+    {7, 95},
+    {8, 96},
+    {10, 98},
+};
 
-    const ph::PHReadConfig phReadConfig = {
-        // how often to read a new ph value
-        .readIntervalMS = 1000,
+// const auto roboTankPHSensorI2CAddress = 98l;
+const unsigned char boardId = 10;
+const auto roboTankPHSensorI2CAddress = boardIDToPort.at(boardId);
+defineRoboTankSignalReaderFunc(roboTankPHSensorI2CAddress);
 
-        .phReadFunc = nameForRoboTankSignalReaderFunc(roboTankPHSensorI2CAddress)};
+const ph::PHReadConfig phReadConfig = {
+    // how often to read a new ph value
+    .readIntervalMS = 1000,
+
+    .phReadFunc = nameForRoboTankSignalReaderFunc(roboTankPHSensorI2CAddress)};
+
+
+/*
+  B10: BRS Sensor
+*/
+struct PHCalibs {
+    ph::PHCalibrator::CalibrationPoint phHighPoint;
+    ph::PHCalibrator::CalibrationPoint phLowPoint;
+};
+const PHCalibs PH_B10_BRS = {
+    .phHighPoint = {.actualPH = 7.0, .readPH = 7.19},
+    .phLowPoint = {.actualPH = 4.0, .readPH = 5.13}
+};
+
+const PHCalibs PH_BASE = {
+    .phHighPoint = {.actualPH = 7.0, .readPH = 6.73},
+    .phLowPoint = {.actualPH = 4.0, .readPH = 4.7}
+};
+
+const auto PH_SENSOR = PH_B10_BRS;
 
 // calibrate the ph probe and enter in the settings here
 // const ph::PHCalibrator::CalibrationPoint phHighPoint = {.actualPH = 10.0, .readPH = 9.53};
-const ph::PHCalibrator::CalibrationPoint phHighPoint = {.actualPH = 7.0, .readPH = 6.73};
-const ph::PHCalibrator::CalibrationPoint phLowPoint = {.actualPH = 4.0, .readPH = 4.7};
+const ph::PHCalibrator::CalibrationPoint phHighPoint = PH_SENSOR.phHighPoint;
+const ph::PHCalibrator::CalibrationPoint phLowPoint = PH_SENSOR.phLowPoint;
+
 
 ph::PHCalibrator phCalibrator(phLowPoint, phHighPoint);
 
@@ -62,6 +93,7 @@ const auto PIN_CONFIG = ESP32_CONFIG;
 const auto PIN_CONFIG = MKS_DLC32_CONFIG;
 #endif
 
+#ifdef UNIT_1
 const DoserConfig fillDoserConfig = {.mlPerFullRotation = 0.269, .motorRPM = 120,
                                      //
                                      .microStepType = SIXTEENTH,
@@ -79,6 +111,25 @@ const DoserConfig drainDoserConfig = {.mlPerFullRotation = 0.3, .motorRPM = 180,
                                       .microStepType = SIXTEENTH,
                                       .fullStepsPerRotation = 200,
                                       .clockwiseDirectionMultiplier = -1};
+#elif UNIT_2
+const DoserConfig fillDoserConfig = {.mlPerFullRotation = 0.313, .motorRPM = 120,
+                                     //
+                                     .microStepType = SIXTEENTH,
+                                     .fullStepsPerRotation = 200,
+                                     .clockwiseDirectionMultiplier = -1};
+
+const DoserConfig reagentDoserConfig = {.mlPerFullRotation = 0.185, .motorRPM = 60,
+                                        //
+                                        .microStepType = SIXTEENTH,
+                                        .fullStepsPerRotation = 200,
+                                        .clockwiseDirectionMultiplier = 1};
+
+const DoserConfig drainDoserConfig = {.mlPerFullRotation = 0.276, .motorRPM = 180,
+                                      //
+                                      .microStepType = SIXTEENTH,
+                                      .fullStepsPerRotation = 200,
+                                      .clockwiseDirectionMultiplier = -1};
+#endif
 
 #ifdef ACCEL_STEPPER_DRIVER
 const std::map<MeasurementDoserType, std::shared_ptr<AccelStepper>> doserSteppers = {

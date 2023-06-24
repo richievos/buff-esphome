@@ -214,7 +214,22 @@ std::unique_ptr<richiev::mqtt::TopicProcessorMap> buildHandlers(doser::BuffDoser
             value = doc["value"].as<int>();
         }
 
-        analogWrite(inputs::PIN_CONFIG.STIRRER_PIN, value);
+        Serial.print("Enabling stirrer with value=");
+        Serial.print(value);
+        Serial.println();
+
+        static bool alreadyEnabled = false;
+
+        if (!alreadyEnabled) {
+            pinMode(inputs::PIN_CONFIG.STIRRER_PIN, OUTPUT);
+            analogWrite(inputs::PIN_CONFIG.STIRRER_PIN, value);
+            // ledcSetup(pin_to_channel[inputs::PIN_CONFIG.STIRRER_PIN], analog_frequency, analog_resolution);
+            // ledcSetup(, 100, 8);
+            ledcChangeFrequency(analogGetChannel(inputs::PIN_CONFIG.STIRRER_PIN), 100, 8);
+            alreadyEnabled = true;
+        } else {
+            analogWrite(inputs::PIN_CONFIG.STIRRER_PIN, value);
+        }
     };
 
     topicsToProcessor["debug/triggerRotations"] = [&](const std::string& payload) {

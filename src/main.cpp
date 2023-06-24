@@ -20,7 +20,7 @@
 #include "mywifi.h"
 #include "ntp.h"
 #include "ota.h"
-#include "ph-controller.h"
+#include "readings/ph-controller.h"
 
 namespace buff {
 /*******************************
