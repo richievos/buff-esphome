@@ -131,7 +131,6 @@ const DoserConfig drainDoserConfig = {.mlPerFullRotation = 0.276, .motorRPM = 18
                                       .clockwiseDirectionMultiplier = -1};
 #endif
 
-#ifdef ACCEL_STEPPER_DRIVER
 const std::map<MeasurementDoserType, std::shared_ptr<AccelStepper>> doserSteppers = {
     {MeasurementDoserType::FILL, std::make_shared<AccelStepper>(AccelStepper::DRIVER, PIN_CONFIG.FILL_WATER_STEP_PIN, PIN_CONFIG.FILL_WATER_DIR_PIN)},
     {MeasurementDoserType::REAGENT, std::make_shared<AccelStepper>(AccelStepper::DRIVER, PIN_CONFIG.REAGENT_STEP_PIN, PIN_CONFIG.REAGENT_DIR_PIN)},
@@ -143,20 +142,6 @@ std::map<MeasurementDoserType, std::shared_ptr<doser::Doser>> doserInstances = {
     {MeasurementDoserType::REAGENT, std::make_shared<doser::AccelStepperDoser>(reagentDoserConfig, doserSteppers.at(MeasurementDoserType::REAGENT))},
     {MeasurementDoserType::DRAIN, std::make_shared<doser::AccelStepperDoser>(drainDoserConfig, doserSteppers.at(MeasurementDoserType::DRAIN))},
 };
-
-#else
-const std::map<MeasurementDoserType, std::shared_ptr<A4988>> doserSteppers = {
-    {MeasurementDoserType::FILL, std::make_shared<A4988>(fillDoserConfig.fullStepsPerRotation, PIN_CONFIG.FILL_WATER_DIR_PIN, PIN_CONFIG.FILL_WATER_STEP_PIN)},
-    {MeasurementDoserType::REAGENT, std::make_shared<A4988>(reagentDoserConfig.fullStepsPerRotation, PIN_CONFIG.REAGENT_DIR_PIN, PIN_CONFIG.REAGENT_STEP_PIN)},
-    {MeasurementDoserType::DRAIN, std::make_shared<A4988>(drainDoserConfig.fullStepsPerRotation, PIN_CONFIG.DRAIN_WATER_DIR_PIN, PIN_CONFIG.DRAIN_WATER_STEP_PIN)},
-};
-
-std::map<MeasurementDoserType, std::shared_ptr<doser::Doser>> doserInstances = {
-    {MeasurementDoserType::FILL, std::make_shared<doser::BasicStepperDoser>(fillDoserConfig, doserSteppers.at(MeasurementDoserType::FILL))},
-    {MeasurementDoserType::REAGENT, std::make_shared<doser::BasicStepperDoser>(reagentDoserConfig, doserSteppers.at(MeasurementDoserType::REAGENT))},
-    {MeasurementDoserType::DRAIN, std::make_shared<doser::BasicStepperDoser>(drainDoserConfig, doserSteppers.at(MeasurementDoserType::DRAIN))},
-};
-#endif
 
 alk_measure::AlkMeasurementConfig alkMeasureConf = {
     .primeTankWaterFillVolumeML = 1.0,
