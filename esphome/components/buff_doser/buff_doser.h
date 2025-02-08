@@ -95,7 +95,7 @@ class BuffDoser : public PollingComponent {
  protected:
   
   std::queue<QueueableCommand> queue_;
-  QueueableCommand current_command_ = {Command::NONE};
+  QueueableCommand current_command_ = {Command::None};
 
 
   // uint32_t start_time_ = 0;
