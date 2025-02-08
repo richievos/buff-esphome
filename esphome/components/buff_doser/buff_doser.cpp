@@ -28,7 +28,7 @@ void BuffDoser::update() {
 
 void BuffDoser::loop() {
   // TODO: this all is not thread safe
-  Command current_command = this->current_command_;
+  QueueCommand current_command = this->current_command_;
   if (this->current_command_.command == Command::None) {
     if (!this->queue_.empty()) {
       current_command = this->queue_.pop();
