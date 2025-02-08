@@ -21,9 +21,9 @@ void BuffDoser::dump_config() {
 }
 
 void BuffDoser::update() {
-  if (this->is_waiting_) {
-    return;
-  }
+  // if (this->is_waiting_) {
+  //   return;
+  // }
 }
 
 void BuffDoser::loop() {
