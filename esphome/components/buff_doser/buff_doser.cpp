@@ -30,8 +30,8 @@ void BuffDoser::loop() {
   // TODO: this all is not thread safe
   Command current_command = this->current_command_;
   if (this->current_command_.command == Command::None) {
-    if (!this->queue_->empty()) {
-      current_command = this->queue_->pop();
+    if (!this->queue_.empty()) {
+      current_command = this->queue_.pop();
       this->current_command_ = current_command;
     }
   }
@@ -149,51 +149,51 @@ void BuffDoser::loop() {
 
 // Actions
 void BuffDoser::dose_continuously() {
-  this->queue_->push({Command::DoseContinuously, 0, 0});
-  this->queue_->push({Command::ReadDosing});
+  this->queue_.push({Command::DoseContinuously, 0, 0});
+  this->queue_.push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_volume(double volume) {
-  this->queue_->push({Command::DoseVolume, volume, 0});
-  this->queue_->push({Command::ReadDosing});
+  this->queue_.push({Command::DoseVolume, volume, 0});
+  this->queue_.push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_volume_over_time(double volume, int duration) {
-  this->queue_->push({Command::DoseVolumeOverTime, volume, duration});
-  this->queue_->push({Command::ReadDosing});
+  this->queue_.push({Command::DoseVolumeOverTime, volume, duration});
+  this->queue_.push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_with_constant_flow_rate(double volume, int duration) {
-  this->queue_->push({Command::DoseWithConstantFlowRate, volume, duration});
-  this->queue_->push({Command::ReadDosing});
+  this->queue_.push({Command::DoseWithConstantFlowRate, volume, duration});
+  this->queue_.push({Command::ReadDosing});
 }
 
 void BuffDoser::set_calibration_volume(double volume) {
-  this->queue_->push({Command::SetCalibrationVolume, volume, 0});
-  this->queue_->push({Command::ReadCalibrationStatus});
-  this->queue_->push({Command::ReadMaxFlowRate});
+  this->queue_.push({Command::SetCalibrationVolume, volume, 0});
+  this->queue_.push({Command::ReadCalibrationStatus});
+  this->queue_.push({Command::ReadMaxFlowRate});
 }
 
 void BuffDoser::clear_total_volume_dosed() {
-  this->queue_->push({Command::ClearTotalVolumeDosed});
-  this->queue_->push({Command::ReadSingleReport});
-  this->queue_->push({Command::ReadTotalVolumeDosed});
-  this->queue_->push({Command::ReadAbsoluteTotalVolumeDosed});
+  this->queue_.push({Command::ClearTotalVolumeDosed});
+  this->queue_.push({Command::ReadSingleReport});
+  this->queue_.push({Command::ReadTotalVolumeDosed});
+  this->queue_.push({Command::ReadAbsoluteTotalVolumeDosed});
 }
 
 void BuffDoser::clear_calibration() {
-  this->queue_->push({Command::ClearCalibration});
-  this->queue_->push({Command::ReadCalibrationStatus});
-  this->queue_->push({Command::ReadMaxFlowRate});
+  this->queue_.push({Command::ClearCalibration});
+  this->queue_.push({Command::ReadCalibrationStatus});
+  this->queue_.push({Command::ReadMaxFlowRate});
 }
 
 void BuffDoser::pause_dosing() {
-  this->queue_->push({Command::PauseDosing});
-  this->queue_->push({Command::ReadPauseStatus});
+  this->queue_.push({Command::PauseDosing});
+  this->queue_.push({Command::ReadPauseStatus});
 }
 
 void BuffDoser::stop_dosing() { 
-  this->queue_->push({Command::StopDosing}); 
+  this->queue_.push({Command::StopDosing}); 
 }
 
 }  // namespace buff
