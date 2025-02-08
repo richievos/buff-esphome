@@ -125,10 +125,6 @@ void BuffDoser::loop() {
       ESP_LOGI("Command", "Received StopDosing command");
       break;
 
-    case Command::TypeRead:
-      ESP_LOGI("Command", "Received TypeRead command");
-      break;
-
     default:
       ESP_LOGE("Command", "Unknown command received");
       break;

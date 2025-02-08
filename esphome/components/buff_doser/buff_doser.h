@@ -47,7 +47,7 @@ struct QueueableCommand {
   Command command;
   double volume = -1;
   int duration = -1;
-}
+};
 
 
 class BuffDoser : public PollingComponent {
