@@ -23,15 +23,12 @@ namespace esphome {
 namespace buff {
 
 enum class Command {
-  ChangeI2CAddress,
   ClearCalibration,
   ClearTotalVolumeDosed,
   DoseContinuously,
   DoseVolume,
   DoseVolumeOverTime,
   DoseWithConstantFlowRate,
-  ExecArbitraryCommandAddress,
-  Find,
   None,
   PauseDosing,
   ReadAbsoluteTotalVolumeDosed,
@@ -40,7 +37,6 @@ enum class Command {
   ReadMaxFlowRate,
   ReadPauseStatus,
   ReadPumpVoltage,
-  ReadSingleReport,
   ReadTotalVolumeDosed,
   SetCalibrationVolume,
   StopDosing,
@@ -86,7 +82,6 @@ class BuffDoser : public PollingComponent {
 #endif
 
   // Actions for BuffDoser
-  void find();
   void dose_continuously();
   void dose_volume(double volume);
   void dose_volume_over_time(double volume, int duration);
@@ -111,10 +106,6 @@ class BuffDoser : public PollingComponent {
   bool is_paused_flag_ = false;
   bool is_dosing_flag_ = false;
 
-  void queue_command_(Command command, double volume=-1, int duration=-1) {
-    this->queue_->push({command, volume, duration});
-  }
-  
 #ifdef USE_SENSOR
   sensor::Sensor *current_volume_dosed_{nullptr};
   sensor::Sensor *total_volume_dosed_{nullptr};
@@ -136,16 +127,6 @@ class BuffDoser : public PollingComponent {
 };
 
 // Action Templates
-template<typename... Ts> class BuffDoserFindAction : public Action<Ts...> {
- public:
-  BuffDoserFindAction(BuffDoser *buff_doser) : buff_doser_(buff_doser) {}
-
-  void play(Ts... x) override { this->buff_doser_->find(); }
-
- protected:
-  BuffDoser *buff_doser_;
-};
-
 template<typename... Ts> class BuffDoserDoseContinuouslyAction : public Action<Ts...> {
  public:
   BuffDoserDoseContinuouslyAction(BuffDoser *buff_doser) : buff_doser_(buff_doser) {}

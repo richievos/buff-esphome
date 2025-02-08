@@ -69,10 +69,6 @@ void BuffDoser::loop() {
       ESP_LOGI("Command", "Received ExecArbitraryCommandAddress command");
       break;
 
-    case Command::Find:
-      ESP_LOGI("Command", "Received Find command");
-      break;
-
     case Command::None:
       ESP_LOGD("Command", "Received None command");
       break;
@@ -111,7 +107,6 @@ void BuffDoser::loop() {
           this->dosing_mode_->publish_state(DOSING_MODE_NONE);
       }
 #endif
-
       break;
 
     case Command::ReadMaxFlowRate:
@@ -124,10 +119,6 @@ void BuffDoser::loop() {
 
     case Command::ReadPumpVoltage:
       ESP_LOGI("Command", "Received ReadPumpVoltage command");
-      break;
-
-    case Command::ReadSingleReport:
-      ESP_LOGI("Command", "Received ReadSingleReport command");
       break;
 
     case Command::ReadTotalVolumeDosed:
@@ -156,59 +147,54 @@ void BuffDoser::loop() {
   // this->wait_time_ = wait_time_for_command;
 }
 
-void BuffDoser::queue_command_(Command command, double volume, int duration) {
-  this->queue->push(command);
-}
-
 // Actions
-
-void BuffDoser::find() { this->queue_command_(BUFF_DOSER_COMMAND_FIND); }
-
 void BuffDoser::dose_continuously() {
-  this->queue_command_(BUFF_DOSER_COMMAND_DOSE_CONTINUOUSLY, 0, 0);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_DOSING);
+  this->queue->push({Command::DoseContinuously, 0, 0});
+  this->queue->push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_volume(double volume) {
-  this->queue_command_(BUFF_DOSER_COMMAND_DOSE_VOLUME, volume, 0);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_DOSING);
+  this->queue->push({Command::DoseVolume, volume, 0});
+  this->queue->push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_volume_over_time(double volume, int duration) {
-  this->queue_command_(BUFF_DOSER_COMMAND_DOSE_VOLUME_OVER_TIME, volume, duration);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_DOSING);
+  this->queue->push({Command::DoseVolumeOverTime, volume, duration});
+  this->queue->push({Command::ReadDosing});
 }
 
 void BuffDoser::dose_with_constant_flow_rate(double volume, int duration) {
-  this->queue_command_(BUFF_DOSER_COMMAND_DOSE_WITH_CONSTANT_FLOW_RATE, volume, duration);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_DOSING);
+  this->queue->push({Command::DoseWithConstantFlowRate, volume, duration});
+  this->queue->push({Command::ReadDosing});
 }
 
 void BuffDoser::set_calibration_volume(double volume) {
-  this->queue_command_(BUFF_DOSER_COMMAND_SET_CALIBRATION_VOLUME, volume, 0);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_CALIBRATION_STATUS);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_MAX_FLOW_RATE);
+  this->queue->push({Command::SetCalibrationVolume, volume, 0});
+  this->queue->push({Command::ReadCalibrationStatus});
+  this->queue->push({Command::ReadMaxFlowRate});
 }
 
 void BuffDoser::clear_total_volume_dosed() {
-  this->queue_command_(BUFF_DOSER_COMMAND_CLEAR_TOTAL_VOLUME_DOSED);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_SINGLE_REPORT);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_TOTAL_VOLUME_DOSED);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_ABSOLUTE_TOTAL_VOLUME_DOSED);
+  this->queue->push({Command::ClearTotalVolumeDosed});
+  this->queue->push({Command::ReadSingleReport});
+  this->queue->push({Command::ReadTotalVolumeDosed});
+  this->queue->push({Command::ReadAbsoluteTotalVolumeDosed});
 }
 
 void BuffDoser::clear_calibration() {
-  this->queue_command_(BUFF_DOSER_COMMAND_CLEAR_CALIBRATION);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_CALIBRATION_STATUS);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_MAX_FLOW_RATE);
+  this->queue->push({Command::ClearCalibration});
+  this->queue->push({Command::ReadCalibrationStatus});
+  this->queue->push({Command::ReadMaxFlowRate});
 }
 
 void BuffDoser::pause_dosing() {
-  this->queue_command_(BUFF_DOSER_COMMAND_PAUSE_DOSING);
-  this->queue_command_(BUFF_DOSER_COMMAND_READ_PAUSE_STATUS);
+  this->queue->push({Command::PauseDosing});
+  this->queue->push({Command::ReadPauseStatus});
 }
 
-void BuffDoser::stop_dosing() { this->queue_command_(BUFF_DOSER_COMMAND_STOP_DOSING); }
+void BuffDoser::stop_dosing() { 
+  this->queue->push({Command::StopDosing}); 
+}
 
 }  // namespace buff
 }  // namespace esphome
