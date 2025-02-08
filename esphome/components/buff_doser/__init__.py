@@ -137,7 +137,6 @@ BUFF_DOSER_NO_ARGS_ACTION_SCHEMA = maybe_simple_id(
 
 # Actions that do not require more arguments
 
-BuffDoserFindAction = buff_ns.class_("BuffDoserFindAction", automation.Action)
 BuffDoserClearTotalVolumeDispensedAction = buff_ns.class_(
     "BuffDoserClearTotalVolumeDispensedAction", automation.Action
 )
@@ -163,21 +162,6 @@ BuffDoserDoseWithConstantFlowRateAction = buff_ns.class_(
 BuffDoserSetCalibrationVolumeAction = buff_ns.class_(
     "BuffDoserSetCalibrationVolumeAction", automation.Action
 )
-BuffDoserChangeI2CAddressAction = buff_ns.class_(
-    "BuffDoserChangeI2CAddressAction", automation.Action
-)
-BuffDoserArbitraryCommandAction = buff_ns.class_(
-    "BuffDoserArbitraryCommandAction", automation.Action
-)
-
-
-@automation.register_action(
-    "buff_doser.find", BuffDoserFindAction, BUFF_DOSER_NO_ARGS_ACTION_SCHEMA
-)
-async def buff_doser_find_to_code(config, action_id, template_arg, args):
-    paren = await cg.get_variable(config[CONF_ID])
-    return cg.new_Pvariable(action_id, template_arg, paren)
-
 
 @automation.register_action(
     "buff_doser.dose_continuously",
@@ -337,51 +321,5 @@ async def buff_doser_set_calibration_volume_to_code(config, action_id, template_
 
     template_ = await cg.templatable(config[CONF_VOLUME], args, cg.double)
     cg.add(var.set_volume(template_))
-
-    return var
-
-
-BUFF_DOSER_CHANGE_I2C_ADDRESS_ACTION_SCHEMA = cv.All(
-    {
-        cv.Required(CONF_ID): cv.use_id(BuffDoser),
-        cv.Required(CONF_ADDRESS): cv.templatable(cv.int_range(min=1, max=127)),
-    }
-)
-
-
-@automation.register_action(
-    "buff_doser.change_i2c_address",
-    BuffDoserChangeI2CAddressAction,
-    BUFF_DOSER_CHANGE_I2C_ADDRESS_ACTION_SCHEMA,
-)
-async def buff_doser_change_i2c_address_to_code(config, action_id, template_arg, args):
-    paren = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_arg, paren)
-
-    template_ = await cg.templatable(config[CONF_ADDRESS], args, cg.double)
-    cg.add(var.set_address(template_))
-
-    return var
-
-
-BUFF_DOSER_ARBITRARY_COMMAND_ACTION_SCHEMA = cv.All(
-    {
-        cv.Required(CONF_ID): cv.use_id(BuffDoser),
-        cv.Required(CONF_COMMAND): cv.templatable(cv.string_strict),
-    }
-)
-
-
-@automation.register_action(
-    "buff_doser.arbitrary_command",
-    BuffDoserArbitraryCommandAction,
-    BUFF_DOSER_ARBITRARY_COMMAND_ACTION_SCHEMA,
-)
-async def buff_doser_arbitrary_command_to_code(config, action_id, template_arg, args):
-    paren = await cg.get_variable(config[CONF_ID])
-    var = cg.new_Pvariable(action_id, template_arg, paren)
-
-    template_ = await cg.templatable(config[CONF_COMMAND], args, cg.std_string)
-    cg.add(var.set_command(template_))
 
     return var
