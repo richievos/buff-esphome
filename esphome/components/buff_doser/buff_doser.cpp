@@ -31,7 +31,8 @@ void BuffDoser::loop() {
   QueueableCommand current_command = this->current_command_;
   if (this->current_command_.command == Command::None) {
     if (!this->queue_.empty()) {
-      current_command = this->queue_.pop();
+      current_command = this->queue_.front();
+      this->queue_.pop();
       this->current_command_ = current_command;
     }
   }
