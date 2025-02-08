@@ -3,7 +3,9 @@
 #include "esphome/core/defines.h"
 #include "esphome/core/component.h"
 #include "esphome/core/automation.h"
-#include "esphome/components/i2c/i2c.h"
+
+#include <queue>
+
 
 #ifdef USE_BINARY_SENSOR
 #include "esphome/components/binary_sensor/binary_sensor.h"
@@ -20,7 +22,39 @@
 namespace esphome {
 namespace buff {
 
-class BuffDoser : public PollingComponent, public i2c::I2CDevice {
+enum class Command {
+  ChangeI2CAddress,
+  ClearCalibration,
+  ClearTotalVolumeDosed,
+  DoseContinuously,
+  DoseVolume,
+  DoseVolumeOverTime,
+  DoseWithConstantFlowRate,
+  ExecArbitraryCommandAddress,
+  Find,
+  None,
+  PauseDosing,
+  ReadAbsoluteTotalVolumeDosed,
+  ReadCalibrationStatus,
+  ReadDosing,
+  ReadMaxFlowRate,
+  ReadPauseStatus,
+  ReadPumpVoltage,
+  ReadSingleReport,
+  ReadTotalVolumeDosed,
+  SetCalibrationVolume,
+  StopDosing,
+  TypeRead
+};
+
+struct QueueableCommand {
+  Command command;
+  double volume = -1;
+  int duration = -1;
+}
+
+
+class BuffDoser : public PollingComponent {
  public:
   void dump_config() override;
   float get_setup_priority() const override { return setup_priority::DATA; };
@@ -62,39 +96,25 @@ class BuffDoser : public PollingComponent, public i2c::I2CDevice {
   void clear_calibration();
   void pause_dosing();
   void stop_dosing();
-  void change_i2c_address(int address);
-  void exec_arbitrary_command(const std::basic_string<char> &command);
 
  protected:
-  uint32_t start_time_ = 0;
-  uint32_t wait_time_ = 0;
-  bool is_waiting_ = false;
-  bool is_first_read_ = true;
+  
+  std::queue<QueueableCommand> queue_;
+  QueueableCommand current_command_ = {Command::NONE};
 
-  uint16_t next_command_ = 0;
-  double next_command_volume_ = 0;  // might be negative
-  int next_command_duration_ = 0;
 
-  uint16_t next_command_queue_[10];
-  double next_command_volume_queue_[10];
-  int next_command_duration_queue_[10];
-  int next_command_queue_head_ = 0;
-  int next_command_queue_last_ = 0;
-  int next_command_queue_length_ = 0;
+  // uint32_t start_time_ = 0;
+  // uint32_t wait_time_ = 0;
+  // bool is_waiting_ = false;
+  // bool is_first_read_ = true;
 
-  uint16_t current_command_ = 0;
   bool is_paused_flag_ = false;
   bool is_dosing_flag_ = false;
 
-  const char *arbitrary_command_{nullptr};
-
-  void send_next_command_();
-  void read_command_result_();
-  void clear_current_command_();
-  void queue_command_(uint16_t command, double volume, int duration, bool should_schedule);
-  void pop_next_command_();
-  uint16_t peek_next_command_();
-
+  void queue_command_(Command command, double volume=-1, int duration=-1) {
+    this->queue_->push({command, volume, duration});
+  }
+  
 #ifdef USE_SENSOR
   sensor::Sensor *current_volume_dosed_{nullptr};
   sensor::Sensor *total_volume_dosed_{nullptr};
@@ -221,28 +241,6 @@ template<typename... Ts> class BuffDoserStopDosingAction : public Action<Ts...> 
   BuffDoserStopDosingAction(BuffDoser *buff_doser) : buff_doser_(buff_doser) {}
 
   void play(Ts... x) override { this->buff_doser_->stop_dosing(); }
-
- protected:
-  BuffDoser *buff_doser_;
-};
-
-template<typename... Ts> class BuffDoserChangeI2CAddressAction : public Action<Ts...> {
- public:
-  BuffDoserChangeI2CAddressAction(BuffDoser *buff_doser) : buff_doser_(buff_doser) {}
-
-  void play(Ts... x) override { this->buff_doser_->change_i2c_address(this->address_.value(x...)); }
-  TEMPLATABLE_VALUE(int, address)
-
- protected:
-  BuffDoser *buff_doser_;
-};
-
-template<typename... Ts> class BuffDoserArbitraryCommandAction : public Action<Ts...> {
- public:
-  BuffDoserArbitraryCommandAction(BuffDoser *buff_doser) : buff_doser_(buff_doser) {}
-
-  void play(Ts... x) override { this->buff_doser_->exec_arbitrary_command(this->command_.value(x...)); }
-  TEMPLATABLE_VALUE(std::string, command)
 
  protected:
   BuffDoser *buff_doser_;
