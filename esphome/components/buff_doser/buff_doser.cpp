@@ -37,10 +37,6 @@ void BuffDoser::loop() {
   }
 
   switch (current_command) {
-    case Command::ChangeI2CAddress:
-      ESP_LOGI("Command", "Received ChangeI2CAddress command");
-      break;
-
     case Command::ClearCalibration:
       ESP_LOGI("Command", "Received ClearCalibration command");
       break;
@@ -63,10 +59,6 @@ void BuffDoser::loop() {
 
     case Command::DoseWithConstantFlowRate:
       ESP_LOGI("Command", "Received DoseWithConstantFlowRate command");
-      break;
-
-    case Command::ExecArbitraryCommandAddress:
-      ESP_LOGI("Command", "Received ExecArbitraryCommandAddress command");
       break;
 
     case Command::None:
