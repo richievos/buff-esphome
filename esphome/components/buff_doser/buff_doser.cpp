@@ -165,7 +165,6 @@ void BuffDoser::set_calibration_volume(double volume) {
 
 void BuffDoser::clear_total_volume_dosed() {
   this->queue_.push({Command::ClearTotalVolumeDosed});
-  this->queue_.push({Command::ReadSingleReport});
   this->queue_.push({Command::ReadTotalVolumeDosed});
   this->queue_.push({Command::ReadAbsoluteTotalVolumeDosed});
 }
