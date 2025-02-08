@@ -37,7 +37,7 @@ void BuffDoser::loop() {
     }
   }
 
-  switch (current_command) {
+  switch (current_command.command) {
     case Command::ClearCalibration:
       ESP_LOGI("Command", "Received ClearCalibration command");
       break;
