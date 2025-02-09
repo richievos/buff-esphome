@@ -1,0 +1,36 @@
+{
+    "sentence": "Libraries related to a doser",
+    "paragraph": "⭐ 6785 stars on GitHub! Supports serialization, deserialization, MessagePack, streams, filtering, and more. Fully tested and documented.",
+    "category": "Data Processing",
+    "url": "https://github.com/richievos/buff",
+    "architectures": "*",
+    "repository": "https://github.com/richievos/buff.git",
+    "license": "MIT"
+  }
+
+  {
+    "name": "ReefBuff",
+    "version": "0.0.1",
+    "description": "Libraries related to a doser. ⭐ 6785 stars on GitHub! Supports serialization, deserialization, MessagePack, streams, filtering, and more. Fully tested and documented.",
+    "keywords": "",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/richievos/buff.git"
+    },
+    "authors": [
+      {
+        "name": "Richie Vos",
+        "email": "vosrichie@gmail.com",
+        "url": "https://github.com/richievos",
+        "maintainer": true
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://github.com/richievos/buff",
+    "dependencies": {
+        "https://github.com/richievos/AccelStepper.git": ""
+    },
+    "frameworks": "*",
+    "platforms": "*"
+  }
+  
