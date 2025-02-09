@@ -42,6 +42,11 @@ cg.add_library(
     repository="https://github.com/richievos/ESP32SSDP",
     version=None,
 )
+cg.add_library(
+    name="ESP32SSDP",
+    repository="https://github.com/richievos/buff-esphome",
+    version=None,
+)
 
 ####################################
 # Stepper libraries
@@ -64,27 +69,27 @@ cg.add_library(
 #     build_flags: '-std=gnu++17 -DLV_CONF_SKIP -D LV_CONF_INCLUDE_SIMPLE'
 # the easiest option might be fork lvgl and create a version with the lv_conf
 # committed in it.
-cg.add_library(
-    name="lvgl",
-    version="^8.3.7",
-)
-cg.add_library(
-    name="SPI",
-    version="^8.3.7",
-)
-cg.add_library(
-    name="TFT_eSPI",
-    repository="https://github.com/richievos/TFT_eSPI",
-    version=None,
-)
-cg.add_library(
-    name="adafruit/Adafruit GFX Library",
-    version="^1.11.5",
-)
-cg.add_library(
-    name="adafruit/Adafruit SSD1306",
-    version="^2.5.7",
-)
+# cg.add_library(
+#     name="lvgl",
+#     version="^8.3.7",
+# )
+# cg.add_library(
+#     name="SPI",
+#     version="^8.3.7",
+# )
+# cg.add_library(
+#     name="TFT_eSPI",
+#     repository="https://github.com/richievos/TFT_eSPI",
+#     version=None,
+# )
+# cg.add_library(
+#     name="adafruit/Adafruit GFX Library",
+#     version="^1.11.5",
+# )
+# cg.add_library(
+#     name="adafruit/Adafruit SSD1306",
+#     version="^2.5.7",
+# )
 
 ####################################
 # Redundant due to esphome libraries
