@@ -43,7 +43,7 @@ cg.add_library(
     version=None,
 )
 cg.add_library(
-    name="ESP32SSDP",
+    name="ReefBuff",
     repository="https://github.com/richievos/buff-esphome",
     version=None,
 )
