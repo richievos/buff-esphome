@@ -18,7 +18,9 @@
     "license": "MIT",
     "homepage": "https://github.com/richievos/buff",
     "dependencies": {
-        "AccelStepper": "https://github.com/richievos/AccelStepper.git#master"
+        "AccelStepper": "https://github.com/richievos/AccelStepper.git#master",
+        "Wire": "Wire",
+        "SPI": "SPI"
     },
     "frameworks": "*",
     "platforms": "*"
