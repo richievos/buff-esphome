@@ -18,12 +18,7 @@
     "license": "MIT",
     "homepage": "https://github.com/richievos/buff",
     "dependencies": {
-        "AccelStepper": {
-            "repository": {
-                "type": "git",
-                "url": "https://github.com/adafruit/AccelStepper.git"
-            }
-        }
+        "AccelStepper": "https://github.com/richievos/AccelStepper.git#master"
     },
     "frameworks": "*",
     "platforms": "*"
