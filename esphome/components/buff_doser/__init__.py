@@ -16,7 +16,7 @@ MULTI_CONF = True
 
 CONF_VOLUME_PER_MINUTE = "volume_per_minute"
 
-buff_ns = cg.esphome_ns.namespace('buff')
+buff_ns = cg.esphome_ns.namespace('::esphome::buff')
 BuffDoser = buff_ns.class_('BuffDoser', i2c.I2CDevice, cg.Component)
 
 ####################################
