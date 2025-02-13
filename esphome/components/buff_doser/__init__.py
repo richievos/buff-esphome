@@ -1,6 +1,5 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome.components import i2c
 from esphome.const import (
     CONF_ID,
     CONF_DURATION,
@@ -17,7 +16,7 @@ MULTI_CONF = True
 CONF_VOLUME_PER_MINUTE = "volume_per_minute"
 
 buff_ns = cg.esphome_ns.namespace('::esphome::buff')
-BuffDoser = buff_ns.class_('BuffDoser', i2c.I2CDevice, cg.Component)
+BuffDoser = buff_ns.class_('BuffDoser', cg.Component)
 
 ####################################
 # Core libraries
@@ -122,14 +121,12 @@ CONFIG_SCHEMA = (
     )
     .extend(cv.COMPONENT_SCHEMA)
     .extend(cv.polling_component_schema("60s"))
-    .extend(i2c.i2c_device_schema(103))
 )
 
 
 async def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     await cg.register_component(var, config)
-    await i2c.register_i2c_device(var, config)
 
 
 BUFF_DOSER_NO_ARGS_ACTION_SCHEMA = maybe_simple_id(
