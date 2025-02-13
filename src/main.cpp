@@ -1,3 +1,4 @@
+#ifdef STANDALONE_REEFBUFF
 // #include "std-backport.h"
 
 // #include <cmath>
@@ -88,3 +89,5 @@ void setup() {
 void loop() {
     buff::loop();
 }
+
+#endif
