@@ -117,7 +117,7 @@ class BuffDoser : public PollingComponent {
     bool is_paused_flag_ = false;
     bool is_dosing_flag_ = false;
 
-    std::shared_ptr<buff::doser::BuffDosers> buffDosersPtr = nullptr;
+    std::shared_ptr<::buff::doser::BuffDosers> buffDosersPtr = nullptr;
     // std::shared_ptr<buff_time::TimeWrapper> timeClient = nullptr;
 
 #ifdef USE_SENSOR
