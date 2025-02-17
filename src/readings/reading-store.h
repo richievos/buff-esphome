@@ -8,7 +8,7 @@
 #include "readings/alk-measure-common.h"
 #include "numeric.h"
 #include "readings/ph-common.h"
-#include "string-manip.h"
+#include "misc/string-manip.h"
 
 namespace buff {
 namespace reading_store {
