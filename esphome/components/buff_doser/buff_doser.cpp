@@ -21,6 +21,27 @@ void BuffDoser::dump_config() {
     LOG_UPDATE_INTERVAL(this);
 }
 
+void BuffDoser::setup() {
+    Serial.begin(115200);
+    Wire.begin(inputs::PIN_CONFIG.I2C_SDA, inputs::PIN_CONFIG.I2C_SCL);
+
+    _buffDosers = std::move(doser::setupDosers(inputs::PIN_CONFIG.STEPPER_DISABLE_PIN, inputs::doserInstances, inputs::doserSteppers));
+    // TODO: make this configurable
+    setupPH_RoboTankPHBoard();
+
+    // trigger a NTP refresh
+    _ntpClient = std::move(ntp::setupNTP());
+    _timeClient = std::make_shared<ntp::NTPTimeWrapper>(_ntpClient);
+
+    // controller::setupController(mqttBroker, mqttClient, buffDosers, phReader, inputs::alkMeasureConf, publisher, timeClient);
+      // monitoring_display::setupDisplay(readingStore, publisher);
+
+
+    // if (this->is_waiting_) {
+    //   return;
+    // }
+}
+
 void BuffDoser::update() {
     // if (this->is_waiting_) {
     //   return;
@@ -28,6 +49,18 @@ void BuffDoser::update() {
 }
 
 void BuffDoser::loop() {
+    auto phReadingPtr = phReader->readNewPHSignalIfTimeAndUpdate<STANDARD_PH_MAVG_LENGTH>(phReadingStats);
+    if (phReadingPtr != nullptr) {
+        phReadingPtr->asOfAdjustedSec = timeClient->getAdjustedTimeSeconds();
+        // publisher->publishPH(*phReadingPtr);
+    }
+
+    ntp::loopNTP(_ntpClient);
+
+    // controller::loopController();
+        // monitoring_display::loopDisplay();
+
+
     // TODO: this all is not thread safe
     auto current_command = this->current_command_;
     if (this->current_command_.command == Command::None) {

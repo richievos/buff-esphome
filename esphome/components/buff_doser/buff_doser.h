@@ -27,7 +27,7 @@
 // #include <nvs_flash.h>
 
 #include "doser/doser.h"
-// #include "inputs.h"
+#include "input-dosers.h"
 
 #include "mks-bridge.h"
 // #endif
@@ -68,6 +68,7 @@ class BuffDoser : public PollingComponent {
     void dump_config() override;
     float get_setup_priority() const override { return setup_priority::DATA; };
 
+    void setup() override;
     void loop() override;
     void update() override;
 
@@ -117,8 +118,10 @@ class BuffDoser : public PollingComponent {
     bool is_paused_flag_ = false;
     bool is_dosing_flag_ = false;
 
-    std::shared_ptr<::buff::doser::BuffDosers> buffDosersPtr = nullptr;
-    // std::shared_ptr<buff_time::TimeWrapper> timeClient = nullptr;
+    std::shared_ptr<::buff::doser::BuffDosers> _buffDosers = nullptr;
+
+    // std::shared_ptr<NTPClient> _ntpClient;
+    // std::shared_ptr<buff_time::TimeWrapper> _timeClient;
 
 #ifdef USE_SENSOR
     sensor::Sensor *current_volume_dosed_{nullptr};

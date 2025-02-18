@@ -4,8 +4,6 @@
 #include <string>
 
 // Buff Libraries
-#include "doser/doser-config.h"
-#include "inputs-board-config.h"
 #include "ph-robotank-sensor.h"
 #include "readings/ph.h"
 
@@ -93,43 +91,7 @@ const auto PIN_CONFIG = ESP32_CONFIG;
 const auto PIN_CONFIG = MKS_DLC32_CONFIG;
 #endif
 
-#ifdef UNIT_1
-const DoserConfig fillDoserConfig = {.mlPerFullRotation = 0.269, .motorRPM = 120,
-                                     //
-                                     .microStepType = SIXTEENTH,
-                                     .fullStepsPerRotation = 200,
-                                     .clockwiseDirectionMultiplier = -1};
-
-const DoserConfig reagentDoserConfig = {.mlPerFullRotation = 0.175, .motorRPM = 60,
-                                        //
-                                        .microStepType = SIXTEENTH,
-                                        .fullStepsPerRotation = 200,
-                                        .clockwiseDirectionMultiplier = 1};
-
-const DoserConfig drainDoserConfig = {.mlPerFullRotation = 0.3, .motorRPM = 180,
-                                      //
-                                      .microStepType = SIXTEENTH,
-                                      .fullStepsPerRotation = 200,
-                                      .clockwiseDirectionMultiplier = -1};
-#elif UNIT_2
-const DoserConfig fillDoserConfig = {.mlPerFullRotation = 0.313, .motorRPM = 120,
-                                     //
-                                     .microStepType = SIXTEENTH,
-                                     .fullStepsPerRotation = 200,
-                                     .clockwiseDirectionMultiplier = -1};
-
-const DoserConfig reagentDoserConfig = {.mlPerFullRotation = 0.185, .motorRPM = 60,
-                                        //
-                                        .microStepType = SIXTEENTH,
-                                        .fullStepsPerRotation = 200,
-                                        .clockwiseDirectionMultiplier = 1};
-
-const DoserConfig drainDoserConfig = {.mlPerFullRotation = 0.276, .motorRPM = 180,
-                                      //
-                                      .microStepType = SIXTEENTH,
-                                      .fullStepsPerRotation = 200,
-                                      .clockwiseDirectionMultiplier = -1};
-#endif
+#include "input-dosers.h"
 
 const std::map<MeasurementDoserType, std::shared_ptr<AccelStepper>> doserSteppers = {
     {MeasurementDoserType::FILL, std::make_shared<AccelStepper>(AccelStepper::DRIVER, PIN_CONFIG.FILL_WATER_STEP_PIN, PIN_CONFIG.FILL_WATER_DIR_PIN)},
