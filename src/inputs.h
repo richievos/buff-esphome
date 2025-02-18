@@ -91,7 +91,7 @@ const auto PIN_CONFIG = ESP32_CONFIG;
 const auto PIN_CONFIG = MKS_DLC32_CONFIG;
 #endif
 
-#include "input-dosers.h"
+#include "inputs-dosers.h"
 
 const std::map<MeasurementDoserType, std::shared_ptr<AccelStepper>> doserSteppers = {
     {MeasurementDoserType::FILL, std::make_shared<AccelStepper>(AccelStepper::DRIVER, PIN_CONFIG.FILL_WATER_STEP_PIN, PIN_CONFIG.FILL_WATER_DIR_PIN)},

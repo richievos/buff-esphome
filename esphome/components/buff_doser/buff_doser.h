@@ -27,7 +27,7 @@
 // #include <nvs_flash.h>
 
 #include "doser/doser.h"
-#include "input-dosers.h"
+#include "inputs-dosers.h"
 
 #include "mks-bridge.h"
 // #endif
