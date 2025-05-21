@@ -25,9 +25,9 @@ void BuffDoser::dump_config() {
 
 void BuffDoser::setup() {
     Serial.begin(115200);
-    Wire.begin(inputs::PIN_CONFIG.I2C_SDA, inputs::PIN_CONFIG.I2C_SCL);
+    Wire.begin(::buff::inputs::PIN_CONFIG.I2C_SDA, inputs::PIN_CONFIG.I2C_SCL);
 
-    _buffDosers = std::move(doser::setupDosers(inputs::PIN_CONFIG.STEPPER_DISABLE_PIN, inputs::doserInstances, inputs::doserSteppers));
+    _buffDosers = std::move(doser::setupDosers(::buff::inputs::PIN_CONFIG.STEPPER_DISABLE_PIN, ::buff::inputs::doserInstances, ::buff::inputs::doserSteppers));
     // TODO: make this configurable
     setupPH_RoboTankPHBoard();
 
