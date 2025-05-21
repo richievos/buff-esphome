@@ -52,11 +52,11 @@ void BuffDoser::update() {
 }
 
 void BuffDoser::loop() {
-    auto phReadingPtr = phReader->readNewPHSignalIfTimeAndUpdate<STANDARD_PH_MAVG_LENGTH>(phReadingStats);
-    if (phReadingPtr != nullptr) {
-        phReadingPtr->asOfAdjustedSec = timeClient->getAdjustedTimeSeconds();
-        // publisher->publishPH(*phReadingPtr);
-    }
+    // auto phReadingPtr = phReader->readNewPHSignalIfTimeAndUpdate<STANDARD_PH_MAVG_LENGTH>(phReadingStats);
+    // if (phReadingPtr != nullptr) {
+    //     phReadingPtr->asOfAdjustedSec = timeClient->getAdjustedTimeSeconds();
+    //     // publisher->publishPH(*phReadingPtr);
+    // }
 
     ::ntp::loopNTP(_ntpClient);
 
