@@ -4,7 +4,6 @@
 #include "esphome/core/log.h"
 
 #include "inputs.h"
-#include "ntp.h"
 
 namespace esphome {
 namespace buff {
