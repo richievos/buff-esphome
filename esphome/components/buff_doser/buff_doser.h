@@ -7,6 +7,7 @@
 #include "esphome/core/defines.h"
 
 #include <Wire.h>
+#include <NTPClient.h>
 
 #ifdef USE_BINARY_SENSOR
 #include "esphome/components/binary_sensor/binary_sensor.h"
