@@ -9,7 +9,7 @@
 #include <Wire.h>
 // #include <NTPClient.h>
 #include "time-common.h"
-#include "ntp.h"
+// #include "ntp.h"
 
 
 #ifdef USE_BINARY_SENSOR
@@ -129,7 +129,7 @@ class BuffDoser : public PollingComponent {
     std::shared_ptr<::buff::doser::BuffDosers> _buffDosers = nullptr;
 
     std::shared_ptr<NTPClient> _ntpClient;
-    std::shared_ptr<buff_time::TimeWrapper> _timeClient;
+    std::shared_ptr<::buff::buff_time::TimeWrapper> _timeClient;
 
 #ifdef USE_SENSOR
     sensor::Sensor *current_volume_dosed_{nullptr};
