@@ -64,6 +64,7 @@ void BuffDoser::loop() {
     const unsigned long publish_interval = 60000; // 60 seconds
     unsigned long current_time = millis();
     if (current_time - last_publish_time >= publish_interval) {
+#ifdef USE_SENSOR
         if (this->current_time_ != nullptr) {
             this->current_time_->publish_state(_ntpClient->getEpochTime());
         }
@@ -71,7 +72,7 @@ void BuffDoser::loop() {
         if (this->uptime_ != nullptr) {
             this->uptime_->publish_state(current_time / 1000);
         }
-
+#endif
         last_publish_time = current_time;
     }
 
