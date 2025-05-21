@@ -7,7 +7,7 @@
 #include "esphome/core/defines.h"
 
 #include <Wire.h>
-// #include <NTPClient.h>
+#include <NTPClient.h>
 #include "time-common.h"
 // #include "ntp.h"
 
