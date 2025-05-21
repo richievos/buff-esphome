@@ -12,6 +12,9 @@
 // const std::string wifiPassword;
 // #include "../inputs/creds.h"
 #include "creds-placeholder.h"
+#include "readings/alk-measure-common.h"
+// #include "readings/ph-common.h"
+
 
 namespace buff {
 
