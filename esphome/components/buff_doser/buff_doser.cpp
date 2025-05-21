@@ -57,7 +57,7 @@ void BuffDoser::loop() {
         // publisher->publishPH(*phReadingPtr);
     }
 
-    ntp::loopNTP(_ntpClient);
+    ::ntp::loopNTP(_ntpClient);
 
     static unsigned long last_publish_time = 0;
     const unsigned long publish_interval = 60000; // 60 seconds
