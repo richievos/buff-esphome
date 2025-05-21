@@ -11,6 +11,8 @@
 #include "time-common.h"
 #include "ntp.h"
 
+#include "esphome.h"
+
 
 // #ifdef USE_BINARY_SENSOR
 // #include "esphome/components/binary_sensor/binary_sensor.h"
