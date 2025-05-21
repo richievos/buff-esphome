@@ -9,6 +9,8 @@
 #include <Wire.h>
 // #include <NTPClient.h>
 #include "ntp.h"
+#include "time-common.h"
+
 
 #ifdef USE_BINARY_SENSOR
 #include "esphome/components/binary_sensor/binary_sensor.h"
