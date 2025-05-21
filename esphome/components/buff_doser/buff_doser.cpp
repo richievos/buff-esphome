@@ -34,7 +34,7 @@ void BuffDoser::setup() {
     _timeClient = std::make_shared<ntp::NTPTimeWrapper>(_ntpClient);
 
     // controller::setupController(mqttBroker, mqttClient, buffDosers, phReader, inputs::alkMeasureConf, publisher, timeClient);
-      // monitoring_display::setupDisplay(readingStore, publisher);
+    // monitoring_display::setupDisplay(readingStore, publisher);
 
 
     // if (this->is_waiting_) {
@@ -57,8 +57,23 @@ void BuffDoser::loop() {
 
     ntp::loopNTP(_ntpClient);
 
+    static unsigned long last_publish_time = 0;
+    const unsigned long publish_interval = 60000; // 60 seconds
+    unsigned long current_time = millis();
+    if (current_time - last_publish_time >= publish_interval) {
+        if (this->current_time_ != nullptr) {
+            this->current_time_->publish_state(_ntpClient->getEpochTime());
+        }
+
+        if (this->uptime_ != nullptr) {
+            this->uptime_->publish_state(current_time / 1000);
+        }
+
+        last_publish_time = current_time;
+    }
+
     // controller::loopController();
-        // monitoring_display::loopDisplay();
+    // monitoring_display::loopDisplay();
 
 
     // TODO: this all is not thread safe

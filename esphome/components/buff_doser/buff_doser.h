@@ -83,6 +83,8 @@ class BuffDoser : public PollingComponent {
         last_volume_requested_ = last_volume_requested;
     }
     void set_max_flow_rate(sensor::Sensor *max_flow_rate) { max_flow_rate_ = max_flow_rate; }
+    void set_current_time(sensor::Sensor *current_time) { current_time_ = current_time; }
+    void set_uptime(sensor::Sensor *uptime) { uptime_ = uptime; }
 #endif
 
 #ifdef USE_BINARY_SENSOR
@@ -120,8 +122,8 @@ class BuffDoser : public PollingComponent {
 
     std::shared_ptr<::buff::doser::BuffDosers> _buffDosers = nullptr;
 
-    // std::shared_ptr<NTPClient> _ntpClient;
-    // std::shared_ptr<buff_time::TimeWrapper> _timeClient;
+    std::shared_ptr<NTPClient> _ntpClient;
+    std::shared_ptr<buff_time::TimeWrapper> _timeClient;
 
 #ifdef USE_SENSOR
     sensor::Sensor *current_volume_dosed_{nullptr};
@@ -130,6 +132,8 @@ class BuffDoser : public PollingComponent {
     sensor::Sensor *pump_voltage_{nullptr};
     sensor::Sensor *max_flow_rate_{nullptr};
     sensor::Sensor *last_volume_requested_{nullptr};
+    sensor::Sensor *current_time_{nullptr};
+    sensor::Sensor *uptime_{nullptr};
 #endif
 
 #ifdef USE_BINARY_SENSOR
