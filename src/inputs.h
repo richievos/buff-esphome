@@ -86,11 +86,11 @@ ph::PHCalibrator phCalibrator(phLowPoint, phHighPoint);
 /*******************************
  * INPUTS Board config
  *******************************/
-#ifdef BOARD_ESP32
-const auto PIN_CONFIG = ESP32_CONFIG;
-#elif BOARD_MKS_DLC32
-const auto PIN_CONFIG = MKS_DLC32_CONFIG;
-#endif
+// #ifdef BOARD_ESP32
+// const auto PIN_CONFIG = ESP32_CONFIG;
+// #elif BOARD_MKS_DLC32
+// const auto PIN_CONFIG = MKS_DLC32_CONFIG;
+// #endif
 
 #include "inputs-dosers.h"
 
