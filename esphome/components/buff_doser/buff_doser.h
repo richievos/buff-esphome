@@ -6,6 +6,8 @@
 #include "esphome/core/component.h"
 #include "esphome/core/defines.h"
 
+#include <Wire.h>
+
 #ifdef USE_BINARY_SENSOR
 #include "esphome/components/binary_sensor/binary_sensor.h"
 #endif
