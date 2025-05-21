@@ -10,7 +10,8 @@
 // Other inputs
 // const std::string wifiSSID;
 // const std::string wifiPassword;
-#include "../inputs/creds.h"
+// #include "../inputs/creds.h"
+#include "creds.h"
 
 namespace buff {
 
