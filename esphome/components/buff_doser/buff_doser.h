@@ -9,7 +9,7 @@
 #include <Wire.h>
 #include <NTPClient.h>
 #include "time-common.h"
-// #include "ntp.h"
+#include "ntp.h"
 
 
 #ifdef USE_BINARY_SENSOR
