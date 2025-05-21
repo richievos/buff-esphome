@@ -32,8 +32,8 @@ void BuffDoser::setup() {
     setupPH_RoboTankPHBoard();
 
     // trigger a NTP refresh
-    _ntpClient = std::move(ntp::setupNTP());
-    _timeClient = std::make_shared<ntp::NTPTimeWrapper>(_ntpClient);
+    _ntpClient = std::move(::ntp::setupNTP());
+    _timeClient = std::make_shared<::ntp::NTPTimeWrapper>(_ntpClient);
 
     // controller::setupController(mqttBroker, mqttClient, buffDosers, phReader, inputs::alkMeasureConf, publisher, timeClient);
     // monitoring_display::setupDisplay(readingStore, publisher);
