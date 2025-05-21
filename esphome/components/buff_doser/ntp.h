@@ -2,6 +2,7 @@
 #pragma once
 
 #include <NTPClient.h>
+#include <WiFiUdp.h>
 #include "time-common.h"
 
 #include <memory>
